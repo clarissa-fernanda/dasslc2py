@@ -23,3 +23,8 @@ jobs:
 
     - name: Run assignment
       run: python index.py
+
+    - name: Commit and Push changes
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "Automatically update image"
