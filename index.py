@@ -19,59 +19,23 @@ def model15(t, y, yp,par):
     #kv=par[6]
     #ncr=par[4]
     #mi4=par[8]
-    G=par[0]
-    coef_1= par[1]                     #|                           |
-    coef_2 = par[2]  
-    #nsol = par[2]  
-    ncr=par[3]
-    nsol = par[4]  
-    roHM=par[5]
-    kv=par[6]
-    VgM=par[7]
-    Vg=par[8]
+    G, coef_1, coef_2, ncr, roHM, kv, VgM, Vg, Aint, kd, neq = par
 
 
-    Vl=y[0]               #Volume da fase líquida [m³]
-    roLM=y[1]             #Densidade molar da fase líquida [mol/m³]
-    mi1=y[2]              #Momento de ordem zero [#/m³]
-    mi2=y[3]              #Momento de ordem um [m/m³]
-    mi3=y[4]              #Momento de ordem dois [m³/m³]
-    mi4=y[5]
-    nl1=y[6]                #Nº de mols de H2O na fase líquida
-    nl2=y[7]            #Nº de mols de CH4 na fase líquida
-    n=y[8]                #Nº de mols da fase líquida
-    Vs=y[9]               #Volume da fase hidrato [m³]
-    rogM=y[10]
-    ng=y[11]
-    nH=y[12]
-    #Vg=y[13]
+
+    Vl, roLM, mi1, mi2, mi3, mi4, nl1, nl2, n, Vs, rogM, ng, nH = y
+
     
-    dVldt=yp[0]        #Derivada do volume da fase líquida [m³/s]
-    droLMdt=yp[1]      #Derivada da densidade molar da fase líquida [mol/ m³ s]
-    #dnldt1=yp[2]     #Derivada do nº de mols de H2O na fase líquida
-    #dnldt2=yp[3]     #Derivada do nº de mols de CH4 na fase líquida  
-    #dndt=yp[2]         #Derivada do nº de mols da fase líquida  
-    #dnldt1 = -(coef_1/coef_2)*ncr
-    dmi1dt=yp[2]    #Derivada do momento de ordem zero [#/m³ s] 
-    dmi2dt=yp[3]    #Derivada do momento de ordem um [m/m³ s] 
-    dmi3dt=yp[4]    #Derivada do momento de ordem dois [m²/m³ s]  
-    dmi4dt=yp[5]    #Derivada do momento de ordem três [m³/m³ s]
-    dnldt1=yp[6]
-    dnldt2=yp[7]     #Derivada do nº de mols de CH4 na fase líquida  
-    dndt=yp[8]
-    dVsdt=yp[9]
-    drogMdt=yp[10] 
-    dngdt=yp[11]   
-    dnHdt=yp[12]
-    #dVgdt=yp[13]
+    (dVldt, droLMdt, dmi1dt, dmi2dt, dmi3dt, dmi4dt, 
+     dnldt1, dnldt2, dndt, dVsdt, drogMdt, dngdt, dnHdt) = yp
     
     
     #taxas iniciais     
     #ncr = coef_2*roHM*kv*(Vl*dmi4dt + mi4)
     #nsol = (Aint*kd/Vl)*(neq-nl2) # taxa de solubilização de metano 
     ncr = coef_2*roHM*kv*(Vl*dmi4dt + mi4*dVldt) # TAXA MOLAR DE CRESCIMENTO DA FASE HIDRATO  
+    nsol = (Aint*kd/Vl)*(neq-nl2)
     ne = rogM + Vg*drogMdt + nsol   # [mol de CH4/s] #TAXA MOLAR DE ENTRADA DE METANO NO REATOR
-    #nsol = (Aint*kd/Vl)*(neq-nl2)
 
     #Aint = ((1.d0/H)+((1.d0/Hl)*((Re**1.75)*(We**3.d0)/(Eu**3.d0))*((rosusM/rogM)**-2.67d0)))*Vr  
 
@@ -115,9 +79,7 @@ y0 = np.array([1,2,0,1,2,1,1,1,1,1,1,1,1])  # Valores iniciais diferentes para c
 # Outros parâmetros e configurações permanecem os mesmos
 t0 = np.array([500])
 yp0 = None  # Não estamos fornecendo derivadas iniciais
-par = np.array([1,1,1,2,2,1,1,1,1]) # Não estamos usando parâmetros adicionais neste exemplo
-atol = 1e-10  # Tolerância absoluta
-rtol = 1e-10 # Tolerância relativa
+par = np.array([1,1,1,2,1,1,1,1,1,1,1]) # Não estamos usando parâmetros adicionais neste exemplo
 
 
 # Resolvendo o sistema de equações usando dasslc
