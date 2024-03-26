@@ -18,5 +18,8 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements.txt
 
-    - name: Install dependencies
+    - name: Build dependencies
       run: python setup.py build_ext --inplace
+
+    - name: Run assignment
+      run: python index.py
