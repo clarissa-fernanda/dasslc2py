@@ -1,0 +1,9 @@
+LICENSE.txt
+README.md
+dasslcmodule.c
+setup.py
+Dasslc2py.egg-info/PKG-INFO
+Dasslc2py.egg-info/SOURCES.txt
+Dasslc2py.egg-info/dependency_links.txt
+Dasslc2py.egg-info/top_level.txt
+dasslc/dasslc.c
